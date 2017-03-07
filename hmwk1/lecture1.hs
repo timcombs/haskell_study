@@ -4,7 +4,7 @@
     programs created by composing expressions
       composing is applying a function to something
     variables NEVER change value in the same context
-      this is calle referential transparency
+      this is called referential transparency
     functions can be treated like data
       passed as arguments to other functions or returned from other functions
       these are first class functions or higher order functions
@@ -54,56 +54,42 @@
 -}
   
 {-
-  Yeah, this Exercise 1 is not very well designed. Sorry for assigning it to you without first trying it.
+  Exercise 1 asks you to define toDigits and toDigitsRev. Working with linked lists. Presumably you would define toDigits and then define toDigitsRev to just call toDigits and use the built-in reverse function to reverse the result.
 
-  In Exercise 1, it asks you to define toDigits and toDigitsRev. Presumably you would define toDigits and then define toDigitsRev to just call toDigits and reverse the result.
+  Exercise 1 is not very well designed. If you are going to use div and mod to find the digits, you have to start by generating the least significant digits and working your way up. So it makes more sense to define toDigitsRev first. don't need toDigits to solve the problem, but easy to define it as the reverse of toDigitsRev.
 
-  Personally I don't think that makes much sense. If you are going to use div and mod to find the digits, you have to start by generating the least significant digits and working your way up. So it makes more sense to define toDigitsRev first. And you don't really need toDigits to solve the problem, but it would be easy to define it as the reverse of toDigitsRev.
-
-  Another possible solution involves using 'show' to turn the Integer into a String, then converting each character back into a digit, but that involves some things you haven't learned about, and it's debatable whether that's a better solution.
-
-  I would say first of all that toDigits isn’t very useful to write. It’s easier to write toDigitsRev and it’s more useful in the solution.
+  Another possible solution uses 'show' to turn the Integer into a String, then convert each character back into a digit, and it's debatable whether that's a better solution.
 
   Then doubleEveryOther asks you to double the digits from the right, which is hard to do, and unnecessary, since you have the digits already reversed. Instead I would make doubleEveryOther start from the left, so, double the second item in the list, and the fourth, and so on.
 
-  Also, if you follow the instructions, you won’t validate the sample solutions correctly. There’s a missing step in the algorithm. It’s based on the Luhn algorithm. After doubling a digit, if the result is 10 or greater, you need to subtract 9 (which would be equivalent to adding the two digits). For example, if your original number is 1385, then:
+  Following the instructions will incorrectly validate the sample solutions. There’s a missing step based on the Luhn algorithm.
+  
+  For example, if original number is 1385, then:
+  toDigitRev to break integer into reversed digit list: [5, 8, 3, 1]
+  Double EVERY OTHER digit: [5, 16, 3, 2]
 
-  Break it into reversed digits: [5, 8, 3, 1]
-  Double every other digit: [5, 16, 3, 2]
-  For any values 10 or greater, subtract 9: [5, 7, 3, 2]
-  Add the digits together: 17
-  Modulo 10: 7
+  need to turn 2 digits numbers into 1 digit
+  based on the Luhn algorithm subtracting 9 is equivalent to adding the two digits together:
+  Note: 16 - 9 == 1 + 6 == 16 'mod' 9
 
-  So, that would not validate. Notice that 16 - 9 is the same as 1 + 6. Also the same as 16 modulo 9.
+  For any results >= 10, subtract 9: [5, 7, 3, 2]
+  or the digits together: 16
+  or Modulo 10: 6
+  
+  add an extra function called, say, modulo9 that would adjust those numbers greater than 9. Hint: you could use the ‘map’ function in your solution.
 
-  So, to get the right answer, you can add an extra function called, say, modulo9 that would adjust those numbers greater than 9. Hint: you could use the ‘map’ function in your solution.
+  As for exercise 5, the Towers of Hanoi, this requires only one function. I recommend you write two cases: when the number of discs is 0, or when it is n. For the nonzero case, you will be appending three lists. 1st list is recursive; 2nd list is not; 3rd list is recursive.
 
-  Another function you might find handy (but is not necessary) is the ‘reverse’ function, that reverses a list.
-
-  As for exercise 2, the Towers of Hanoi, this requires only one function. I recommend you write two cases: when the number of discs is 0, or when it is n. For the nonzero case, you will be appending three lists. Two of those lists will involve a recursive call.
-
-  I didn’t try the optional Towers of Hanoi with 4 pegs. That seems a bit beside the point of learning to write recursive functions, and more about the math. But I’d be happy to help if you’re interested in solving it.
+  don't worry about the 4 peg case
 -}
 
-{-
-  #haskell-beginners
-  irc channel for haskell beginners
--}
-
-{-
-  = is a binding not an assignment
-  bindings are permanent
-
-  programs that we are writing are loaded into the REPL
-  then we can call the functions in the REPL
-
-  working with linked lists for this assignment
--}
 
 {-# OPTIONS_GHC -Wall #-}
 
+{- Exercise #1 -}
 -- typing the function and its input and output
 toDigitsRev :: Integer -> [Integer]
+toDigits :: Integer -> [Integer]
 
 -- base case
 toDigitsRev 0 = []
@@ -111,6 +97,20 @@ toDigitsRev 0 = []
 toDigitsRev n
   | n < 0 = []
   | otherwise = n `mod` 10 : toDigitsRev (n `div` 10)
+
+toDigits n = reverse (toDigitsRev n)
+
+
+{- Exercise #2 -}
+doubleEveryOther :: [Integer] -> [Integer]
+
+-- base case
+doubleEveryOther <= 0 = []
+-- function definition
+
+
+
+
 
 {-
   towers of hanoi:
